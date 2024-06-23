@@ -15,7 +15,11 @@ namespace Proiect.Core.Services
 
         public AuthService(IConfiguration config)
         {
-            _securityKey = config["JWT:SecurityKey"];
+            _securityKey = config["Jwt:SecurityKey"];
+            if (string.IsNullOrEmpty(_securityKey))
+            {
+                throw new ArgumentNullException(nameof(_securityKey), "JWT Security Key cannot be null or empty.");
+            }
         }
 
         public string GetToken(User user, string role)
@@ -25,23 +29,24 @@ namespace Proiect.Core.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_securityKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var roleClaim = new Claim("role", role);
-            var idClaim = new Claim("userId", user.Id.ToString());
-            var infoClaim = new Claim("username", user.Email);
+            var claims = new[]
+            {
+                new Claim("role", role),
+                new Claim("userId", user.UserId.ToString()),
+                new Claim("username", user.Email)
+            };
 
-            var tokenDescriptior = new SecurityTokenDescriptor
+            var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = "Backend",
                 Audience = "Frontend",
-                Subject = new ClaimsIdentity(new[] { roleClaim, idClaim, infoClaim }),
-                Expires = DateTime.Now.AddMinutes(5),
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = credentials
             };
 
-            var token = jwtTokenHandler.CreateToken(tokenDescriptior);
-            var tokenString = jwtTokenHandler.WriteToken(token);
-
-            return tokenString;
+            var token = jwtTokenHandler.CreateToken(tokenDescriptor);
+            return jwtTokenHandler.WriteToken(token);
         }
 
         public bool ValidateToken(string tokenString)
@@ -51,21 +56,25 @@ namespace Proiect.Core.Services
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = false,
-                IssuerSigningKey = key,
+                ValidateIssuer = true,
+                ValidIssuer = "Backend",
+                ValidateAudience = true,
+                ValidAudience = "Frontend",
                 ValidateLifetime = true,
-                ValidateAudience = false,
-                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateIssuerSigningKey = true
             };
 
-            if (!jwtTokenHandler.CanReadToken(tokenString.Replace("Bearer ", string.Empty)))
+            try
             {
-                Console.WriteLine("Invalid Token");
+                jwtTokenHandler.ValidateToken(tokenString, tokenValidationParameters, out SecurityToken validatedToken);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Token validation failed: {ex.Message}");
                 return false;
             }
-
-            jwtTokenHandler.ValidateToken(tokenString, tokenValidationParameters, out var validatedToken);
-            return validatedToken != null;
         }
 
         public byte[] GenerateSalt()

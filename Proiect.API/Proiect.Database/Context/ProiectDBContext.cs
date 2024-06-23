@@ -14,13 +14,13 @@ namespace Proiect.Database.Context
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
-
+        public DbSet<Employee> Employees { get; set; }
 
         public DbSet<User> Users { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                    .UseSqlServer("Server=localhost;Database=Tema1;Integrated Security=SSPI;TrustServerCertificate=True").LogTo(Console.WriteLine);
+                    .UseSqlServer("Server=localhost;Database=ProiectNet;Integrated Security=SSPI;TrustServerCertificate=True").LogTo(Console.WriteLine);
         }
     }
 }

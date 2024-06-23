@@ -10,10 +10,11 @@ namespace Proiect.Database.Dtos.Response
 {
     public class GetOrderDetailResponse
     {
-        public int Id { get; set; }
+        public int OrderId { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatuses Status { get; set; }
 
         public ShortCustomerDto Customer { get; set; }
+        public ShortEmployeeDto Employee { get; set; }
     }
 }

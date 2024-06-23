@@ -47,5 +47,16 @@ namespace Proiect.Database.Repositories
 
             return count;
         }
+
+        public void Update(Order order)
+        {
+            labProjectDbContext.Orders.Update(order);
+            labProjectDbContext.SaveChanges();
+        }
+        public void Delete(Order order)
+        {
+            labProjectDbContext.Orders.Remove(order);
+            labProjectDbContext.SaveChanges();
+        }
     }
 }

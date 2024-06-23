@@ -27,5 +27,14 @@ namespace Proiect.Database.QueryExtensions
 
             return query;
         }
+        public static IQueryable<Order> WhereAssignedEmployeeIds(this IQueryable<Order> query, GetOrderRequest payload)
+        {
+            if (payload.AssignedEmployeeIds == null)
+                return query;
+
+            query = query.Where(e => payload.AssignedEmployeeIds == e.EmployeeId);
+
+            return query;
+        }
     }
 }

@@ -11,11 +11,13 @@ namespace Proiect.Database.Entities
     public class Order :BaseEntity
 
     {
-        public int Id { get; set; }
+        public int OrderId { get; set; }
         public int? CustomerId { get; set; }
+        public int? EmployeeId { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatuses Status { get; set; }
 
         public Customer Customer { get; set; }
+        public Employee Employee { get; set; }
     }
 }

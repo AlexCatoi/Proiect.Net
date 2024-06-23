@@ -3,6 +3,7 @@ using Proiect.Database.Dtos.Request;
 using Proiect.Database.Dtos.Response;
 using Proiect.Database.Repositories;
 using Proiect.Database.Entities;
+using Proiect.Database.Context;
 
 namespace Proiect.Core.Services
 {
@@ -33,5 +34,46 @@ namespace Proiect.Core.Services
 
             return result;
         }
+
+        public void UpdateOrder(UpdateOrderRequest payload)
+        {
+            var dbContext = new ProiectDBContext();
+
+            var existingOrder = dbContext.Orders.FirstOrDefault(o => o.OrderId == payload.OrderId);
+            
+            if (existingOrder == null)
+            {
+                
+                return;
+            }
+            existingOrder.DateUpdated = DateTime.UtcNow;
+            existingOrder.CustomerId = payload.AssignedCustomerIds;
+            existingOrder.EmployeeId = payload.AssignedEmployeeIds;
+            existingOrder.Status = (Database.Enums.OrderStatuses)payload.Status;
+
+            orderRepository.Update(existingOrder);
+        }
+        public void DeleteOrder(DeleteOrderRequest payload)
+        {
+            var dbContext = new ProiectDBContext();
+
+            var existingOrder = dbContext.Orders.FirstOrDefault(o => o.OrderId == payload.OrderId);
+
+            if (existingOrder == null)
+            {
+                //throw exception
+                return;
+            }
+            if(existingOrder.Customer!=null || existingOrder.Employee!=null)
+            {
+                //throw exception
+                return;
+            }
+            orderRepository.Delete(existingOrder);
+        }
+
+
+      
     }
-}
+    }
+

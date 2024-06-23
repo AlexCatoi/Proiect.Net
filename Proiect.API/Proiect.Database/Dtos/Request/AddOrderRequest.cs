@@ -11,6 +11,8 @@ namespace Proiect.Database.Dtos.Request
     public class AddOrderRequest
     {
         public int? CustomerId { get; set; }
+        public int? EmployeeId { get; set; }
+
         public DateTime OrderDate { get; set; }
         public OrderStatuses Status { get; set; }
     }

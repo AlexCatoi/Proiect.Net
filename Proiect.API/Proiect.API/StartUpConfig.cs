@@ -17,6 +17,8 @@ namespace Proiect.API
             services.AddScoped<OrdersService>();
             services.AddScoped<AuthService>();
             services.AddScoped<UserService>();
+            services.AddScoped<EmployeeService>();
+            services.AddScoped<CustomerService>();
 
         }
 
@@ -27,12 +29,14 @@ namespace Proiect.API
 
             services.AddScoped<OrdersRepository>();
             services.AddScoped<UsersRepository>();
+            services.AddScoped<CustomerRepository>();
+            services.AddScoped<EmployeeRepository>();
         }
 
 
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"]);
+            var key = Encoding.ASCII.GetBytes(configuration["Jwt:SecurityKey"]);
 
             services.AddAuthentication(x =>
             {
@@ -67,19 +71,21 @@ namespace Proiect.API
                     In = ParameterLocation.Header,
                     Description = "Please enter JWT with Bearer into field",
                     Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
                 });
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                    {
-                        new OpenApiSecurityScheme {
-                            Reference = new OpenApiReference {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] { }
+            {
+                new OpenApiSecurityScheme {
+                    Reference = new OpenApiReference {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
                     }
-                });
+                },
+                new string[] { }
+            }
+        });
             });
         }
     }
