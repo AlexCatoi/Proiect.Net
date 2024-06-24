@@ -19,7 +19,7 @@ namespace Proiect.API
             services.AddScoped<UserService>();
             services.AddScoped<EmployeeService>();
             services.AddScoped<CustomerService>();
-
+            services.AddScoped<ProductService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -31,6 +31,7 @@ namespace Proiect.API
             services.AddScoped<UsersRepository>();
             services.AddScoped<CustomerRepository>();
             services.AddScoped<EmployeeRepository>();
+            services.AddScoped<ProductRepository>();
         }
 
 

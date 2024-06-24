@@ -19,5 +19,7 @@ namespace Proiect.Database.Entities
 
         public Customer Customer { get; set; }
         public Employee Employee { get; set; }
+
+        public ICollection<OrderProducts> OrderProducts { get; set; }
     }
 }

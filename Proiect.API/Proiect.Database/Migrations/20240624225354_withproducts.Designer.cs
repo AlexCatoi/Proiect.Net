@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect.Database.Context;
 
@@ -11,9 +12,11 @@ using Proiect.Database.Context;
 namespace Proiect.Database.Migrations
 {
     [DbContext(typeof(ProiectDBContext))]
-    partial class ProiectDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240624225354_withproducts")]
+    partial class withproducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -254,7 +257,7 @@ namespace Proiect.Database.Migrations
             modelBuilder.Entity("Proiect.Database.Entities.OrderProducts", b =>
                 {
                     b.HasOne("Proiect.Database.Entities.Order", "Order")
-                        .WithMany("OrderProducts")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -268,11 +271,6 @@ namespace Proiect.Database.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("Proiect.Database.Entities.Order", b =>
-                {
-                    b.Navigation("OrderProducts");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,11 +18,27 @@ namespace Proiect.Core.Services
 
         public void AddOrder(AddOrderRequest payload)
         {
-            var project = payload.ToEntity();
+            try
+            {
+                var order = new Order
+                {
+                    CustomerId = payload.CustomerId,
+                    EmployeeId = payload.EmployeeId,
+                    OrderDate = payload.OrderDate,
+                    Status = payload.Status,
+                    DateCreated = DateTime.UtcNow,
+                    DateUpdated = DateTime.UtcNow,
+                    OrderProducts = payload.OrderProducts.Select(op => new OrderProducts { ProductId = op.ProductId }).ToList()
+                };
 
-            orderRepository.Add(project);
+                orderRepository.Add(order);
+            }
+            catch (Exception ex)
+            {
+                // Handle exception accordingly (logging, throwing, etc.)
+                throw ex;
+            }
         }
-       
 
         public GetOrderResponse GetOrders(GetOrderRequest payload)
         {
