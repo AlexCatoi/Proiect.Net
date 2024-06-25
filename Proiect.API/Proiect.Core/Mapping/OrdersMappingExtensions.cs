@@ -37,7 +37,7 @@ namespace Proiect.Core.Mapping
             result.OrderDate = entity.OrderDate;
             result.Status = entity.Status;
 
-           result.CustomerId= entity.CustomerId;
+            result.CustomerId= entity.CustomerId;
             result.EmployeeId= entity.EmployeeId;
 
             return result;

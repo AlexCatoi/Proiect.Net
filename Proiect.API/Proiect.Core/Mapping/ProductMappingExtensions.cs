@@ -14,6 +14,8 @@ namespace Proiect.Core.Mapping
 
             var result = new Product
             {
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
                 Nume = dto.Nume,
                 NrBucati = dto.NrBucati,
                 Valoare = dto.Valoare,

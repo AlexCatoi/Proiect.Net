@@ -22,6 +22,8 @@ namespace Proiect.Core.Services
         {
             var product = new Product
             {
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
                 Nume = payload.Nume,
                 NrBucati = payload.NrBucati,
                 Valoare = payload.Valoare,
@@ -62,6 +64,7 @@ namespace Proiect.Core.Services
 
             if (existingProduct != null)
             {
+                existingProduct.DateUpdated = DateTime.UtcNow;
                 existingProduct.Nume = payload.Nume;
                 existingProduct.NrBucati = payload.NrBucati;
                 existingProduct.Valoare = payload.Valoare;
