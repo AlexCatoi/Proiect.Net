@@ -22,6 +22,7 @@ namespace Proiect.Database.Repositories
             labProjectDbContext.Orders.Add(order);
             labProjectDbContext.SaveChanges();
         }
+
         private IQueryable<Order> GetOrdersQuery(GetOrderRequest payload)
         {
             var query = labProjectDbContext.Orders
@@ -58,5 +59,6 @@ namespace Proiect.Database.Repositories
             labProjectDbContext.Orders.Remove(order);
             labProjectDbContext.SaveChanges();
         }
+        
     }
 }

@@ -29,8 +29,20 @@ namespace Proiect.Core.Services
                     Total = payload.Total,
                     DateCreated = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
-                    OrderProducts = payload.OrderProducts.Select(op => new OrderProducts { ProductId = op.ProductId }).ToList()
+                    OrderProducts = new List<OrderProducts>()  // Initialize the collection
                 };
+
+                // Iterate through each product in the payload and add it to OrderProducts
+                foreach (var productDto in payload.OrderProducts)
+                {
+                    var orderProduct = new OrderProducts
+                    {
+                        ProductId = productDto.ProductId,
+                        Quantity = productDto.Quantity
+                    };
+
+                    order.OrderProducts.Add(orderProduct);
+                }
 
                 orderRepository.Add(order);
             }
