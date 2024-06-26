@@ -17,6 +17,7 @@ namespace Proiect.Core.Mapping
             result.DateCreated = DateTime.UtcNow;
             result.DateUpdated = DateTime.UtcNow;
             result.Status = dto.Status;
+            result.Total = dto.Total;
             result.CustomerId = dto.CustomerId;
             result.EmployeeId = dto.EmployeeId;
             return result;
@@ -36,7 +37,7 @@ namespace Proiect.Core.Mapping
             result.OrderId = entity.OrderId;
             result.OrderDate = entity.OrderDate;
             result.Status = entity.Status;
-
+            result.Total = entity.Total;
             result.CustomerId= entity.CustomerId;
             result.EmployeeId= entity.EmployeeId;
 

@@ -14,6 +14,7 @@ namespace Proiect.Database.Entities
         public int OrderId { get; set; }
         public int? CustomerId { get; set; }
         public int? EmployeeId { get; set; }
+        public double? Total { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatuses Status { get; set; }
 

@@ -13,7 +13,7 @@ namespace Proiect.Database.Dtos.Request
     {
         public int? CustomerId { get; set; }
         public int? EmployeeId { get; set; }
-
+        public double? Total { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatuses Status { get; set; }
 

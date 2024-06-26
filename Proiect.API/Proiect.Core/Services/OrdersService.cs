@@ -26,6 +26,7 @@ namespace Proiect.Core.Services
                     EmployeeId = payload.EmployeeId,
                     OrderDate = payload.OrderDate,
                     Status = payload.Status,
+                    Total = payload.Total,
                     DateCreated = DateTime.UtcNow,
                     DateUpdated = DateTime.UtcNow,
                     OrderProducts = payload.OrderProducts.Select(op => new OrderProducts { ProductId = op.ProductId }).ToList()
@@ -64,6 +65,7 @@ namespace Proiect.Core.Services
             existingOrder.DateUpdated = DateTime.UtcNow;
             existingOrder.CustomerId = payload.AssignedCustomerIds;
             existingOrder.EmployeeId = payload.AssignedEmployeeIds;
+            existingOrder.Total = payload.Total;
             existingOrder.Status = (Database.Enums.OrderStatuses)payload.Status;
 
             orderRepository.Update(existingOrder);

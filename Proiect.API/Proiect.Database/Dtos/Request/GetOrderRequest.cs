@@ -11,6 +11,7 @@ namespace Proiect.Database.Dtos.Request
     {
         public int? AssignedCustomerIds { get; set; }
         public int? AssignedEmployeeIds { get; set; }
+        public double? Total { get; set; }
         public OrderStatuses? Status { get; set; }
     }
 }

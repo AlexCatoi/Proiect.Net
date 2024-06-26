@@ -13,6 +13,7 @@ namespace Proiect.Database.Dtos.Common
         public int OrderId { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatuses Status { get; set; }
+        public double? Total { get; set; }
 
         public int? CustomerId { get; set; }
         public int? EmployeeId { get; set; }
