@@ -35,7 +35,6 @@ namespace Proiect.Core.Services
             }
             catch (Exception ex)
             {
-                // Handle exception accordingly (logging, throwing, etc.)
                 throw ex;
             }
         }

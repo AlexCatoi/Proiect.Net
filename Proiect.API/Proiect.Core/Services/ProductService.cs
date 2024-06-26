@@ -1,58 +1,34 @@
-﻿using Proiect.Database.Context;
-using Proiect.Database.Dtos.Common;
+﻿using Proiect.Core.Mapping;
 using Proiect.Database.Dtos.Request;
 using Proiect.Database.Dtos.Response;
 using Proiect.Database.Entities;
+using Proiect.Database.Repositories;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Proiect.Core.Services
 {
     public class ProductService
     {
-        private readonly ProiectDBContext _dbContext;
+        private readonly ProductRepository _productRepository;
 
-        public ProductService(ProiectDBContext dbContext)
+        public ProductService(ProductRepository productRepository)
         {
-            _dbContext = dbContext;
+            _productRepository = productRepository;
         }
 
         public void AddProduct(AddProductRequest payload)
         {
-            var product = new Product
-            {
-                DateCreated = DateTime.UtcNow,
-                DateUpdated = DateTime.UtcNow,
-                Nume = payload.Nume,
-                NrBucati = payload.NrBucati,
-                Valoare = payload.Valoare,
-                Greutate = payload.Greutate,
-                Marime = payload.Marime,
-                IsActive = payload.IsActive
-            };
-
-            _dbContext.Products.Add(product);
-            _dbContext.SaveChanges();
+            var product = payload.ToEntity();
+            _productRepository.Add(product);
         }
 
-        public GetProductResponse GetProducts()
+        public GetProductResponse GetProducts(GetProductRequest payload)
         {
-            var products = _dbContext.Products.ToList();
-
+            var products = _productRepository.GetProducts(payload);
             var result = new GetProductResponse
             {
-                Products = products.Select(p => new ShortProductDto
-                {
-                    ProductId = p.ProductId,
-                    Nume = p.Nume,
-                    NrBucati = p.NrBucati,
-                    Valoare = p.Valoare,
-                    Greutate = p.Greutate,
-                    Marime = p.Marime,
-                    IsActive = p.IsActive
-                }).ToList(),
-                Count = products.Count
+                Products = products.ToProductDtos(),
+                Count = _productRepository.CountProducts(payload)
             };
 
             return result;
@@ -60,7 +36,7 @@ namespace Proiect.Core.Services
 
         public void UpdateProduct(UpdateProductRequest payload)
         {
-            var existingProduct = _dbContext.Products.FirstOrDefault(p => p.ProductId == payload.ProductId);
+            var existingProduct = _productRepository.GetById(payload.ProductId.Value);
 
             if (existingProduct != null)
             {
@@ -70,20 +46,18 @@ namespace Proiect.Core.Services
                 existingProduct.Valoare = payload.Valoare;
                 existingProduct.Greutate = payload.Greutate;
                 existingProduct.Marime = payload.Marime;
-                existingProduct.IsActive = payload.IsActive;
+                existingProduct.IsActive = payload.IsActive.Value;
 
-                _dbContext.SaveChanges();
+                _productRepository.Update(existingProduct);
             }
         }
 
-        public void DeleteProduct(int productId)
+        public void DeleteProduct(DeleteProductRequest payload)
         {
-            var existingProduct = _dbContext.Products.FirstOrDefault(p => p.ProductId == productId);
-
+            var existingProduct = _productRepository.GetById(payload.ProductId.Value);
             if (existingProduct != null)
             {
-                _dbContext.Products.Remove(existingProduct);
-                _dbContext.SaveChanges();
+                _productRepository.Delete(existingProduct);
             }
         }
     }
